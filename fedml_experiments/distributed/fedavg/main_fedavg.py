@@ -4,6 +4,7 @@ import os
 import random
 import socket
 import sys
+from time import sleep
 
 import numpy as np
 import psutil
@@ -387,16 +388,20 @@ def create_model(args, model_name, output_dim):
         model = EfficientNet()
 
     return model
-
-
+'''
+mpirun -np 3 -hostfile ./mpi_host_file python3 ./main_fedavg.py --gpu_mapping_file gpu_mapping.yaml --gpu_mapping_key mapping_default --model lr --dataset mnist --data_dir ./../../../data/mnist --partition_method hetero --client_num_in_total 2 --client_num_per_round 2 --comm_round 1 --epochs 1 --client_optimizer sgd --batch_size 4 --lr 0.03 --ci 1
+'''
 if __name__ == "__main__":
     # quick fix for issue in MacOS environment: https://github.com/openai/spinningup/issues/16
     if sys.platform == "darwin":
         os.environ["KMP_DUPLICATE_LIB_OK"] = "True"
-
     # initialize distributed computing (MPI)
-    comm, process_id, worker_number = FedML_init()
-
+    os.system("echo 1 >> /home/wcx/gitProject/FedML/fedml_experiments/distributed/fedavg/1.txt")
+    comm, process_id, worker_number = FedML_init() # worker_number是有多少个MPI通信的进程
+    print(comm, " ", process_id, " ", worker_number)
+    os.system(f"echo {process_id} >> /home/wcx/gitProject/FedML/fedml_experiments/distributed/fedavg/1.txt")
+    # while True:
+    #     sleep(3)
     # parse python script input parameters
     parser = argparse.ArgumentParser()
     args = add_args(parser)
@@ -452,7 +457,7 @@ if __name__ == "__main__":
 
     # Please check "GPU_MAPPING.md" to see how to define the topology
     logging.info("process_id = %d, size = %d" % (process_id, worker_number))
-    device = mapping_processes_to_gpu_device_from_yaml_file(
+    device = mapping_processes_to_gpu_device_from_yaml_file(   # 将client和server的进程映射到不同设备上
         process_id, worker_number, args.gpu_mapping_file, args.gpu_mapping_key
     )
 
@@ -476,8 +481,8 @@ if __name__ == "__main__":
 
     # start distributed training
     FedML_FedAvg_distributed(
-        process_id,
-        worker_number,
+        process_id, # process_id标识MPI进程
+        worker_number, # 
         device,
         comm,
         model,

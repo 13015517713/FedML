@@ -274,7 +274,7 @@ def custom_model_trainer(args, model):
     else: # default model trainer is for classification problem
         return MyModelTrainerCLS(model)
 
-
+#sh run_fedavg_standalone_pytorch.sh 0 2 2 4 mnist ./../../../data/mnist lr hetero 1 1 0.03 sgd 1
 if __name__ == "__main__":
     logging.basicConfig()
     logger = logging.getLogger()

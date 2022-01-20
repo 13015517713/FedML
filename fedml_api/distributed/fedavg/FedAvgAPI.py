@@ -116,7 +116,7 @@ def init_server(
             aggregator,
             comm,
             rank,
-            size,
+            size, # 第一个是server,其他的都是client
             backend,
             is_preprocessed=True,
             preprocessed_client_lists=preprocessed_sampling_lists,

@@ -27,7 +27,7 @@ class FedAVGServerManager(ServerManager):
 
     def run(self):
         super().run()
-
+    # 向所有客户端发所有参数
     def send_init_msg(self):
         # sampling clients
         client_indexes = self.aggregator.client_sampling(self.round_idx, self.args.client_num_in_total,

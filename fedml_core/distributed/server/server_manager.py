@@ -39,7 +39,7 @@ class ServerManager(Observer):
         self.message_handler_dict = dict()
 
     def run(self):
-        self.register_message_receive_handlers()
+        self.register_message_receive_handlers() # 注册所有客户端的消息回调
         self.com_manager.handle_receive_message()
         print("done running")
 

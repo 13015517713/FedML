@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-
+# sh run_fedavg_standalone_pytorch.sh 0 2 2 4 mnist
+#  ./../../../data/mnist lr hetero 1 1 0.03 sgd 1
 GPU=$1
 
 CLIENT_NUM=$2
@@ -26,7 +27,7 @@ OPT=$12
 
 CI=$13
 
-python3 ./main_fedavg.py \
+echo {python3 ./main_fedavg.py \
 --gpu $GPU \
 --dataset $DATASET \
 --data_dir $DATA_PATH \
@@ -39,4 +40,4 @@ python3 ./main_fedavg.py \
 --batch_size $BATCH_SIZE \
 --client_optimizer $OPT \
 --lr $LR \
---ci $CI
+--ci $CI}
